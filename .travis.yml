@@ -1,0 +1,35 @@
+language: node_js  #构建环境
+node_js:
+- stable  #选择当前稳定版本
+branches:
+  only:
+  - dev   #这里替换你要监听的分支
+cache:
+  directories:
+  - node_modules  #把node_modules文件夹放入缓存，节约每次构建的时间
+before_install:
+- npm install hexo-cli -g #安装Hexo脚手架工具
+install:
+- npm install  #安装package.json中的依赖
+script:
+- hexo clean
+- hexo generate
+after_success: #script阶段成功后执行，构建失败不会执行
+  - git clone https://${GH_REF} .deploy_git  # GH_REF是最下面配置的仓库地址
+  - cd .deploy_git
+  - git checkout master
+  - cd ../
+  - mv .deploy_git/.git/ ./public/   # 这一步之前的操作是为了保留master分支的提交记录，不然每次git init的话只有1条commit
+  - cd ./public
+  - git init
+  - git config user.name "lic"
+  - git config user.email "acelichao@163.com"
+  - git add .
+  - git commit -m "Travis CI Auto Build at `date +"%Y-%m-%d %H:%M:%S"`"
+  # Github Pages
+  - git push --force --quiet "https://${GH_TOKEN}@${GH_REF}" master:master 
+
+env:
+ global:
+   # Github Pages
+   - GH_REF: github.com/LicV587/LicV587.github.io.git
