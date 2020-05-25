@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon-32x32.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.ico">
+  <link rel="mask-icon" href="/images/favicon-32x32.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.itjk.me","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"hide","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":false,"nav":null,"activeClass":"valine"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta property="og:type" content="article">
+<meta property="og:title" content="Hexo系列(6)Hexo博客绑定自定义域名">
+<meta property="og:url" content="https://blog.itjk.me/2019/04/29/Hexo%E7%B3%BB%E5%88%97(6)Hexo%E5%8D%9A%E5%AE%A2%E7%BB%91%E5%AE%9A%E8%87%AA%E5%AE%9A%E4%B9%89%E5%9F%9F%E5%90%8D.html">
+<meta property="og:site_name" content="挨踢极客">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/LicV587/img/master/picgo/20190528160925.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/005QTX3hgy1g2j8qa2p4nj31gq0mqjsw.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/005QTX3hgy1g2j8u30zqnj31h80ox0us.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/005QTX3hgy1g2j8yek6ksj31ci0oitad.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/005QTX3hgy1g2j9h3gbmdj316v0l0q7p.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/005QTX3hgy1g2j9kfk1sqj31600ch403.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/005QTX3hgy1g2j9pd6oezj312m0jn40y.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/005QTX3hgy1g2j9pm96zaj311y0mmtae.jpg">
+<meta property="article:published_time" content="2019-04-29T02:10:59.000Z">
+<meta property="article:modified_time" content="2020-05-25T05:35:30.829Z">
+<meta property="article:author" content="挨踢极客">
+<meta property="article:tag" content="Hexo">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/LicV587/img/master/picgo/20190528160925.jpg">
+
+<link rel="canonical" href="https://blog.itjk.me/2019/04/29/Hexo%E7%B3%BB%E5%88%97(6)Hexo%E5%8D%9A%E5%AE%A2%E7%BB%91%E5%AE%9A%E8%87%AA%E5%AE%9A%E4%B9%89%E5%9F%9F%E5%90%8D.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Hexo系列(6)Hexo博客绑定自定义域名 | 挨踢极客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="挨踢极客" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">挨踢极客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">show me the code</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">8</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">14</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.itjk.me/2019/04/29/Hexo%E7%B3%BB%E5%88%97(6)Hexo%E5%8D%9A%E5%AE%A2%E7%BB%91%E5%AE%9A%E8%87%AA%E5%AE%9A%E4%B9%89%E5%9F%9F%E5%90%8D.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/luxun.jpg">
+      <meta itemprop="name" content="挨踢极客">
+      <meta itemprop="description" content="人生苦短，我想编程">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="挨踢极客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Hexo系列(6)Hexo博客绑定自定义域名
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-04-29 10:10:59" itemprop="dateCreated datePublished" datetime="2019-04-29T10:10:59+08:00">2019-04-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-05-25 13:35:30" itemprop="dateModified" datetime="2020-05-25T13:35:30+08:00">2020-05-25</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Hexo/" itemprop="url" rel="index"><span itemprop="name">Hexo</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2019/04/29/Hexo%E7%B3%BB%E5%88%97(6)Hexo%E5%8D%9A%E5%AE%A2%E7%BB%91%E5%AE%9A%E8%87%AA%E5%AE%9A%E4%B9%89%E5%9F%9F%E5%90%8D.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/04/29/Hexo%E7%B3%BB%E5%88%97(6)Hexo%E5%8D%9A%E5%AE%A2%E7%BB%91%E5%AE%9A%E8%87%AA%E5%AE%9A%E4%B9%89%E5%9F%9F%E5%90%8D.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>1.2k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>1 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><img src="https://raw.githubusercontent.com/LicV587/img/master/picgo/20190528160925.jpg" alt=""></p>
+<a id="more"></a>
+
+<blockquote>
+<p>如果你感觉直接使用 <strong>用户名.github.io</strong> 的域名作为你的博客链接不够专业，不够程序员的话，那么就购买一个域名解析绑定到你的博客</p>
+</blockquote>
+<h3 id="一、-购买域名注册"><a href="#一、-购买域名注册" class="headerlink" title="一、 购买域名注册"></a>一、 购买域名注册</h3><p>购买域名可以到域名服务商去购买，如国内的 <a href="https://wanwang.aliyun.com/" target="_blank" rel="noopener">阿里云</a>、<a href="https://dnspod.cloud.tencent.com/" target="_blank" rel="noopener">腾讯云</a>、国外的<a href="https://sg.godaddy.com/zh/" target="_blank" rel="noopener">Godaddy</a>等。<br>这里推荐 Godaddy ,快速无限备案，没有限制，附上域名注册指南：<a href="https://www.zhudc.com/website/1669" target="_blank" rel="noopener">https://www.zhudc.com/website/1669</a></p>
+<h3 id="二、-配置域名解析"><a href="#二、-配置域名解析" class="headerlink" title="二、 配置域名解析"></a>二、 配置域名解析</h3><p>购买好了域名，我们还要让域名解析到博客的地址。首先，我们去到刚刚刚刚购买域名的服务商那里，进入域名管理的控制台，一般来说，域名服务商会同时提供域名注册和域名解析的服务，在我们购买好域名后，域名服务商会给我们配置上域名解析的服务。但是他们提供的域名解析服务可能收费或者是解析效果不好，这里推荐几个优秀的免费域名解析服务商，国内的有<a href="https://www.dnspod.cn/" target="_blank" rel="noopener">dnspod</a>、<a href="http://www.cloudxns.net/" target="_blank" rel="noopener">cloudxns</a>，国外的有<a href="https://www.cloudflare.com/" target="_blank" rel="noopener">cloudflare</a>。我的域名是从godaddy上购买的，使用的是dnspod的域名解析服务。下面以godaddy域名+dnspod解析来讲解具体操作步骤。</p>
+<h4 id="1-进入godaddy-账户中心，点击DNS，如图："><a href="#1-进入godaddy-账户中心，点击DNS，如图：" class="headerlink" title="1. 进入godaddy 账户中心，点击DNS，如图："></a>1. 进入godaddy 账户中心，点击DNS，如图：</h4><p><img src="https://ws1.sinaimg.cn/large/005QTX3hgy1g2j8qa2p4nj31gq0mqjsw.jpg" alt=""></p>
+<h4 id="2-进入DNS管理后，找到域名服务器，点击更改，如图："><a href="#2-进入DNS管理后，找到域名服务器，点击更改，如图：" class="headerlink" title="2. 进入DNS管理后，找到域名服务器，点击更改，如图："></a>2. 进入DNS管理后，找到域名服务器，点击更改，如图：</h4><p><img src="https://ws1.sinaimg.cn/large/005QTX3hgy1g2j8u30zqnj31h80ox0us.jpg" alt=""></p>
+<h4 id="3-选择自定义域名，添加dnspod的DNS，保存，如图："><a href="#3-选择自定义域名，添加dnspod的DNS，保存，如图：" class="headerlink" title="3. 选择自定义域名，添加dnspod的DNS，保存，如图："></a>3. 选择自定义域名，添加dnspod的DNS，保存，如图：</h4><p><img src="https://ws1.sinaimg.cn/large/005QTX3hgy1g2j8yek6ksj31ci0oitad.jpg" alt=""></p>
+<p>这样，就将我们的域名解析从godaddy转到了dnspod。</p>
+<h4 id="4-进入到dnspod，配置我们需要解析的域名，如图："><a href="#4-进入到dnspod，配置我们需要解析的域名，如图：" class="headerlink" title="4. 进入到dnspod，配置我们需要解析的域名，如图："></a>4. 进入到dnspod，配置我们需要解析的域名，如图：</h4><p><img src="https://ws1.sinaimg.cn/large/005QTX3hgy1g2j9h3gbmdj316v0l0q7p.jpg" alt=""></p>
+<h4 id="5-然后点击刚刚添加的域名，进入解析管理，添加一条CNAME记录指向用户名-github-io-博客地址，如图："><a href="#5-然后点击刚刚添加的域名，进入解析管理，添加一条CNAME记录指向用户名-github-io-博客地址，如图：" class="headerlink" title="5. 然后点击刚刚添加的域名，进入解析管理，添加一条CNAME记录指向用户名.github.io 博客地址，如图："></a>5. 然后点击刚刚添加的域名，进入解析管理，添加一条CNAME记录指向用户名.github.io 博客地址，如图：</h4><p><img src="https://ws1.sinaimg.cn/large/005QTX3hgy1g2j9kfk1sqj31600ch403.jpg" alt=""></p>
+<h3 id="三、在github-项目中设置我们的域名"><a href="#三、在github-项目中设置我们的域名" class="headerlink" title="三、在github 项目中设置我们的域名"></a>三、在github 项目中设置我们的域名</h3><h4 id="1-在GitHub-项目中，点击settings，如图："><a href="#1-在GitHub-项目中，点击settings，如图：" class="headerlink" title="1. 在GitHub 项目中，点击settings，如图："></a>1. 在GitHub 项目中，点击settings，如图：</h4><p><img src="https://ws1.sinaimg.cn/large/005QTX3hgy1g2j9pd6oezj312m0jn40y.jpg" alt=""></p>
+<h4 id="2-找到Github-Pages节点，在Custom-domain处填入自定义域名，再开启强制HTTPS访问"><a href="#2-找到Github-Pages节点，在Custom-domain处填入自定义域名，再开启强制HTTPS访问" class="headerlink" title="2. 找到Github Pages节点，在Custom domain处填入自定义域名，再开启强制HTTPS访问"></a>2. 找到Github Pages节点，在Custom domain处填入自定义域名，再开启强制HTTPS访问</h4><p><img src="https://ws1.sinaimg.cn/large/005QTX3hgy1g2j9pm96zaj311y0mmtae.jpg" alt=""></p>
+<h3 id="四、在Hexo-博客中设置自定义域名"><a href="#四、在Hexo-博客中设置自定义域名" class="headerlink" title="四、在Hexo 博客中设置自定义域名"></a>四、在Hexo 博客中设置自定义域名</h3><h4 id="1-在博客-站点配置文件-中，找到-URL-节点，设置自定义域名"><a href="#1-在博客-站点配置文件-中，找到-URL-节点，设置自定义域名" class="headerlink" title="1. 在博客 站点配置文件 中，找到 URL 节点，设置自定义域名"></a>1. 在博客 站点配置文件 中，找到 URL 节点，设置自定义域名</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># URL</span><br><span class="line">## If your site is put in a subdirectory, set url as &#39;http:&#x2F;&#x2F;yoursite.com&#x2F;child&#39; and root as &#39;&#x2F;child&#x2F;&#39;</span><br><span class="line">url: https:&#x2F;&#x2F;blog.itjk.me	# 自定义域名</span><br><span class="line">root: &#x2F;</span><br><span class="line">permalink: :year&#x2F;:month&#x2F;:day&#x2F;:title.html</span><br><span class="line"># permalink_defaults: :category&#x2F;:title.html</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-git-bash-进入博客根目录，执行下列命令："><a href="#2-git-bash-进入博客根目录，执行下列命令：" class="headerlink" title="2. git bash 进入博客根目录，执行下列命令："></a>2. git bash 进入博客根目录，执行下列命令：</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd source</span><br><span class="line">touch CNAME</span><br></pre></td></tr></table></figure>
+<p>然后打开 新建立的 <strong>CNAME</strong> 文件，在文件中填入自定义域名，如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">blog.itjk.me</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-将更改后的项目执行以下命令行"><a href="#3-将更改后的项目执行以下命令行" class="headerlink" title="3. 将更改后的项目执行以下命令行"></a>3. 将更改后的项目执行以下命令行</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo g -d</span><br></pre></td></tr></table></figure>
+<p>就将博客推送到了github仓库，然后访问 blog.itjk.me，就能看到博客了</p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>挨踢极客
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://blog.itjk.me/2019/04/29/Hexo%E7%B3%BB%E5%88%97(6)Hexo%E5%8D%9A%E5%AE%A2%E7%BB%91%E5%AE%9A%E8%87%AA%E5%AE%9A%E4%B9%89%E5%9F%9F%E5%90%8D.html" title="Hexo系列(6)Hexo博客绑定自定义域名">https://blog.itjk.me/2019/04/29/Hexo系列(6)Hexo博客绑定自定义域名.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Hexo/" rel="tag"># Hexo</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/04/28/Hexo%E7%B3%BB%E5%88%97(5)Hexo%E6%B7%BB%E5%8A%A0%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F.html" rel="prev" title="Hexo系列(5)Hexo添加评论系统">
+      <i class="fa fa-chevron-left"></i> Hexo系列(5)Hexo添加评论系统
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/05/24/Java%E7%B3%BB%E5%88%97(1)%E5%AE%9E%E7%8E%B0%E6%B1%89%E5%AD%97%E8%BD%AC%E6%8B%BC%E9%9F%B3.html" rel="next" title="Java系列(1)实现汉字转拼音">
+      Java系列(1)实现汉字转拼音 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、-购买域名注册"><span class="nav-number">1.</span> <span class="nav-text">一、 购买域名注册</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、-配置域名解析"><span class="nav-number">2.</span> <span class="nav-text">二、 配置域名解析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-进入godaddy-账户中心，点击DNS，如图："><span class="nav-number">2.1.</span> <span class="nav-text">1. 进入godaddy 账户中心，点击DNS，如图：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-进入DNS管理后，找到域名服务器，点击更改，如图："><span class="nav-number">2.2.</span> <span class="nav-text">2. 进入DNS管理后，找到域名服务器，点击更改，如图：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-选择自定义域名，添加dnspod的DNS，保存，如图："><span class="nav-number">2.3.</span> <span class="nav-text">3. 选择自定义域名，添加dnspod的DNS，保存，如图：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-进入到dnspod，配置我们需要解析的域名，如图："><span class="nav-number">2.4.</span> <span class="nav-text">4. 进入到dnspod，配置我们需要解析的域名，如图：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-然后点击刚刚添加的域名，进入解析管理，添加一条CNAME记录指向用户名-github-io-博客地址，如图："><span class="nav-number">2.5.</span> <span class="nav-text">5. 然后点击刚刚添加的域名，进入解析管理，添加一条CNAME记录指向用户名.github.io 博客地址，如图：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、在github-项目中设置我们的域名"><span class="nav-number">3.</span> <span class="nav-text">三、在github 项目中设置我们的域名</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-在GitHub-项目中，点击settings，如图："><span class="nav-number">3.1.</span> <span class="nav-text">1. 在GitHub 项目中，点击settings，如图：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-找到Github-Pages节点，在Custom-domain处填入自定义域名，再开启强制HTTPS访问"><span class="nav-number">3.2.</span> <span class="nav-text">2. 找到Github Pages节点，在Custom domain处填入自定义域名，再开启强制HTTPS访问</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、在Hexo-博客中设置自定义域名"><span class="nav-number">4.</span> <span class="nav-text">四、在Hexo 博客中设置自定义域名</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-在博客-站点配置文件-中，找到-URL-节点，设置自定义域名"><span class="nav-number">4.1.</span> <span class="nav-text">1. 在博客 站点配置文件 中，找到 URL 节点，设置自定义域名</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-git-bash-进入博客根目录，执行下列命令："><span class="nav-number">4.2.</span> <span class="nav-text">2. git bash 进入博客根目录，执行下列命令：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-将更改后的项目执行以下命令行"><span class="nav-number">4.3.</span> <span class="nav-text">3. 将更改后的项目执行以下命令行</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="挨踢极客"
+      src="/images/luxun.jpg">
+  <p class="site-author-name" itemprop="name">挨踢极客</p>
+  <div class="site-description" itemprop="description">人生苦短，我想编程</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/LicV587" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;LicV587" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/LicV587" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;LicV587" rel="noopener" target="_blank"><i class="twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://blog.didispace.com/" title="http:&#x2F;&#x2F;blog.didispace.com&#x2F;" rel="noopener" target="_blank">程序员DD</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://blog.yuqiyu.com/" title="http:&#x2F;&#x2F;blog.yuqiyu.com&#x2F;" rel="noopener" target="_blank">恒宇少年</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.lqdev.cn/" title="https:&#x2F;&#x2F;blog.lqdev.cn&#x2F;" rel="noopener" target="_blank">趔趄的猿</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.ityouknow.com/" title="http:&#x2F;&#x2F;www.ityouknow.com&#x2F;" rel="noopener" target="_blank">纯洁的微笑</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://x-d.xyz/" title="https:&#x2F;&#x2F;x-d.xyz&#x2F;" rel="noopener" target="_blank">iYuWe</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.codesheep.cn/" title="https:&#x2F;&#x2F;www.codesheep.cn&#x2F;" rel="noopener" target="_blank">程序羊</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://springboot.fun/" title="http:&#x2F;&#x2F;springboot.fun&#x2F;" rel="noopener" target="_blank">SpingBoot中文索引</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://springcloud.fun/" title="http:&#x2F;&#x2F;springcloud.fun&#x2F;" rel="noopener" target="_blank">SpingCloud中文索引</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://chinsyo.com/" title="https:&#x2F;&#x2F;chinsyo.com&#x2F;" rel="noopener" target="_blank">Chinsyo | 晨晓</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heartbeat"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">挨踢极客</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">37k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">34 分钟</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'FYsByw69gerlQOt3ngMbxRvi-9Nh9j0Va',
+      appKey     : 'mxtN4JUfO9N8GoOwzawXaimJ',
+      placeholder: "show me your comments",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : true,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

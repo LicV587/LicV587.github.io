@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon-32x32.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.ico">
+  <link rel="mask-icon" href="/images/favicon-32x32.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.itjk.me","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"hide","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":false,"nav":null,"activeClass":"valine"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta property="og:type" content="article">
+<meta property="og:title" content="解惑系列(1)JSON到底是什么">
+<meta property="og:url" content="https://blog.itjk.me/2019/05/28/%E8%A7%A3%E6%83%91%E7%B3%BB%E5%88%97(1)JSON%E5%88%B0%E5%BA%95%E6%98%AF%E4%BB%80%E4%B9%88.html">
+<meta property="og:site_name" content="挨踢极客">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/LicV587/img/master/picgo/20190528224203.jpg">
+<meta property="article:published_time" content="2019-05-28T14:42:45.000Z">
+<meta property="article:modified_time" content="2020-05-25T05:46:25.826Z">
+<meta property="article:author" content="挨踢极客">
+<meta property="article:tag" content="JSON">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/LicV587/img/master/picgo/20190528224203.jpg">
+
+<link rel="canonical" href="https://blog.itjk.me/2019/05/28/%E8%A7%A3%E6%83%91%E7%B3%BB%E5%88%97(1)JSON%E5%88%B0%E5%BA%95%E6%98%AF%E4%BB%80%E4%B9%88.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>解惑系列(1)JSON到底是什么 | 挨踢极客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="挨踢极客" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">挨踢极客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">show me the code</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">8</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">14</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.itjk.me/2019/05/28/%E8%A7%A3%E6%83%91%E7%B3%BB%E5%88%97(1)JSON%E5%88%B0%E5%BA%95%E6%98%AF%E4%BB%80%E4%B9%88.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/luxun.jpg">
+      <meta itemprop="name" content="挨踢极客">
+      <meta itemprop="description" content="人生苦短，我想编程">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="挨踢极客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          解惑系列(1)JSON到底是什么
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-05-28 22:42:45" itemprop="dateCreated datePublished" datetime="2019-05-28T22:42:45+08:00">2019-05-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-05-25 13:46:25" itemprop="dateModified" datetime="2020-05-25T13:46:25+08:00">2020-05-25</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JSON/" itemprop="url" rel="index"><span itemprop="name">JSON</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2019/05/28/%E8%A7%A3%E6%83%91%E7%B3%BB%E5%88%97(1)JSON%E5%88%B0%E5%BA%95%E6%98%AF%E4%BB%80%E4%B9%88.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/05/28/%E8%A7%A3%E6%83%91%E7%B3%BB%E5%88%97(1)JSON%E5%88%B0%E5%BA%95%E6%98%AF%E4%BB%80%E4%B9%88.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3.1k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>3 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><img src="https://raw.githubusercontent.com/LicV587/img/master/picgo/20190528224203.jpg" alt=""></p>
+<a id="more"></a>
+
+<p>A: “这个接口我传个 JSON 给你，格式是这样的 ‘[1, 2, 3]’”<br>B: “等下，这不是数组吗，JSON 应该有键啊，类似这样才行’{ “key”: [1, 2, 3] }’”<br>A: “不，这就是 JSON 格式的数据”<br>B: “啊，是吗？”</p>
+<p>如果你对上面的对话也心存疑虑，可以继续往下看。</p>
+<h2 id="什么是-JSON"><a href="#什么是-JSON" class="headerlink" title="什么是 JSON"></a>什么是 JSON</h2><p>首先应该明确JSON是什么，再讨论[1, 2, 3]是不是。</p>
+<blockquote>
+<p>JSON(JavaScript Object Notation) 是一种轻量级的数据交换格式。</p>
+</blockquote>
+<p>它仅仅是一种格式，就好比厨师脑中的食谱，这道菜有什么材料。而从原材料变成成品给顾客食用，这个过程食谱并没有实际参与，只是一个指导作用。</p>
+<p>所以JSON也是不存在于我们的程序中，不存在任何地方，只是一个思维，存在我们脑海里。</p>
+<p>这个思维，就是JSON这种格式应该包含哪些元素。</p>
+<h2 id="JSON-格式"><a href="#JSON-格式" class="headerlink" title="JSON 格式"></a>JSON 格式</h2><p>JSON建构于两种结构：</p>
+<blockquote>
+<p>1.“名称/值”对的集合<br>2.值的有序列表</p>
+</blockquote>
+<p>从这里就能看出[1, 2, 3]是符合JSON格式的。</p>
+<blockquote>
+<p>但不能说[1, 2, 3]是一个JSON，它在javascript中可以被转换为数组，也可以在其他语言中被转换为数组（如果有这种类型）。而之所以只有这两种，是因为大部分现代计算机语言都支持。</p>
+</blockquote>
+<p>那[1, 2, undefined, 3]符合JSON格式吗？</p>
+<p>简单一想，</p>
+<blockquote>
+<p>“既然结构要是计算机语言都支持的，那结构中的值也需要吧，而undefined是javascript独有的，其他语言并没有，所以不符合JSON格式。”</p>
+</blockquote>
+<p>bingo！合法的JSON值可以是以下六种：</p>
+<blockquote>
+<p>1.string<br>2.number<br>3.boolean<br>4.null<br>5.object<br>6.array</p>
+</blockquote>
+<p>所以下面的数据格式是合法的JSON：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"person"</span>: &#123;</span><br><span class="line">        <span class="attr">"name"</span>: <span class="string">"ltaoo"</span>,</span><br><span class="line">        <span class="attr">"age"</span>: <span class="number">18</span>,</span><br><span class="line">        <span class="attr">"skills"</span>: [<span class="string">"javascript"</span>, <span class="string">"html"</span>, <span class="string">"css"</span>]</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"happy"</span>: <span class="literal">true</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="JavaScript-中的-JSON"><a href="#JavaScript-中的-JSON" class="headerlink" title="JavaScript 中的 JSON"></a>JavaScript 中的 JSON</h2><h3 id="传递的到底是什么？"><a href="#传递的到底是什么？" class="headerlink" title="传递的到底是什么？"></a>传递的到底是什么？</h3><p>在JavaScript中，如果在请求接口时要传递数据，我们往往会说“传一个JSON”，从上面已经知道JSON只是一个格式，那我们传递的到底是什么？</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 一个简单的 post 请求</span></span><br><span class="line"><span class="keyword">const</span> body = &#123;</span><br><span class="line">    name: <span class="string">'ltaoo'</span>,</span><br><span class="line">    age: <span class="number">18</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">fetch(<span class="string">'https://easy-mock.com/mock/5a1d30028e6ddb24964c2d91/business/api/login'</span>, &#123;</span><br><span class="line">    method: <span class="string">'POST'</span>,</span><br><span class="line">    body,</span><br><span class="line">&#125;)</span><br><span class="line">    .then(<span class="function">(<span class="params">res</span>) =&gt;</span> res.json())</span><br><span class="line">    .then(<span class="function">(<span class="params">data</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(data);</span><br><span class="line">    &#125;);</span><br></pre></td></tr></table></figure>
+<p>但实际上并没有将参数传递过去，即Headers中并不存在Request Payload，需要将body使用JSON.stringify()方法转换为一个字符串后，才能成功传递。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> body = &#123;</span><br><span class="line">    name: <span class="string">'ltaoo'</span>,</span><br><span class="line">    age: <span class="number">18</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">fetch(<span class="string">'https://easy-mock.com/mock/5a1d30028e6ddb24964c2d91/business/api/login'</span>, &#123;</span><br><span class="line">    method: <span class="string">'POST'</span>,</span><br><span class="line">    body: <span class="built_in">JSON</span>.stringify(body),</span><br><span class="line">&#125;)</span><br><span class="line">    .then(<span class="function">(<span class="params">res</span>) =&gt;</span> res.json())</span><br><span class="line">    .then(<span class="function">(<span class="params">data</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(data);</span><br><span class="line">    &#125;);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>JSON.stringify()方法是将一个JavaScript值(对象或者数组)转换为一个 JSON 字符串。</p>
+</blockquote>
+<p>所以实际传递的是字符串，更严格来说是“JSON 格式的字符串”。</p>
+<h3 id="JSON-对象"><a href="#JSON-对象" class="headerlink" title="JSON 对象"></a>JSON 对象</h3><blockquote>
+<p>JSON.stringify()里面的JSON是什么？</p>
+</blockquote>
+<p>这是JavaScript中的内置对象，是实际存在的，但不同于之前所说的JSON。</p>
+<p>这是最容易让人混乱的地方了，如果我们的JavaScript中有这么一个对象，由于符合JSON格式，有些人称为”JSON 对象“，但这只是一个普通的对象。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> jsonObj = &#123;</span><br><span class="line">    <span class="string">"name"</span>: <span class="string">"ltaoo"</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="JSON-stringify"><a href="#JSON-stringify" class="headerlink" title="JSON.stringify"></a>JSON.stringify</h3><p>上面提到，实际传递的是字符串，所以不使用JSON.stringify()而是自己声明一个也是可以的，比如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">fetch(<span class="string">'https://easy-mock.com/mock/5a1d30028e6ddb24964c2d91/business/api/login'</span>, &#123;</span><br><span class="line">    method: <span class="string">'POST'</span>,</span><br><span class="line">    body: <span class="string">'&#123; "name": "ltaoo" &#125;'</span>,</span><br><span class="line">&#125;)</span><br><span class="line">    .then(<span class="function">(<span class="params">res</span>) =&gt;</span> res.json())</span><br><span class="line">    .then(<span class="function">(<span class="params">data</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(data);</span><br><span class="line">    &#125;);</span><br></pre></td></tr></table></figure>
+<p>当然这样很蠢。。。而且stringify()方法还有一些额外的”特效“：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> body = &#123;</span><br><span class="line">    name: <span class="string">'ltaoo'</span>,</span><br><span class="line">    skills: <span class="literal">undefined</span>,</span><br><span class="line">&#125;;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">JSON</span>.stringify(body));</span><br></pre></td></tr></table></figure>
+<p>你认为结果会是什么？</p>
+<blockquote>
+<p>1.报错，因为undefined不是合法的值<br>2.成功，忽略不合法的值<br>3.成功，将undefined转换为null<br>4.其他</p>
+</blockquote>
+<p>答案是2，最终打印的值是{“name”:”ltaoo”}，如果换个格式，结果是一样的吗？</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> body = &#123;</span><br><span class="line">    name: <span class="string">'ltaoo'</span>,</span><br><span class="line">    skills: [<span class="literal">undefined</span>],</span><br><span class="line">&#125;;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">JSON</span>.stringify(body));</span><br><span class="line"><span class="comment">// 结果是 &#123;"name":"ltaoo"&#125; 还是 &#123;"name":"ltaoo", "skills": []&#125; ?</span></span><br></pre></td></tr></table></figure>
+<p>答案揭晓，是{“name”:”ltaoo”,”skills”:[null]}。</p>
+<p>我们都知道，JavaScript的数组不同于其他语言的数组，元素可以是不同类型的如[1, true, ‘name’]是合法的，使用JSON.stringify()会得到什么结果呢？</p>
+<h3 id="JSON-parse"><a href="#JSON-parse" class="headerlink" title="JSON.parse"></a>JSON.parse</h3><blockquote>
+<p>JSON.parse() 方法用来解析JSON字符串，构造由字符串描述的JavaScript值或对象。</p>
+</blockquote>
+<p>在实际的数据传递中并不常用，因为请求库（axios、isomorphic 等）帮我们做了处理。常见的使用场景是将自己生成的JSON 字符串转换回来，如localStorage存储信息。</p>
+<p>那可以用来判断某个字符串是否符合JSON格式呢？</p>
+<p>可以，而且经常会遇到解析失败导致的报错，类似于：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Uncaught <span class="built_in">SyntaxError</span>: Unexpected token x <span class="keyword">in</span> <span class="built_in">JSON</span> at position x</span><br></pre></td></tr></table></figure>
+<p>如果接口请求得到的结果不符合JSON格式也会有这种报错。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>JSON是日常开发中最常使用的，但仅限于“会用”，实际上JSON的用途已经不局限在“数据交换”，NoSQL、配置文件也有JSON的身影，深入了解是有必要的，毕竟看起来这么“简单”。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>转载自：<br><a href="https://ltaoo.github.io/2017/12/30/json%E5%88%B0%E5%BA%95%E6%98%AF%E4%BB%80%E4%B9%88/" target="_blank" rel="noopener">https://ltaoo.github.io/2017/12/30/json%E5%88%B0%E5%BA%95%E6%98%AF%E4%BB%80%E4%B9%88/</a><br>参考：<br><a href="https://www.cnblogs.com/leejersey/p/3594473.html" target="_blank" rel="noopener">jquery JSON的解析方式</a><br><a href="https://www.cnblogs.com/tingbogiu/p/5826414.html" target="_blank" rel="noopener">jquery中的json操作</a></p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>挨踢极客
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://blog.itjk.me/2019/05/28/%E8%A7%A3%E6%83%91%E7%B3%BB%E5%88%97(1)JSON%E5%88%B0%E5%BA%95%E6%98%AF%E4%BB%80%E4%B9%88.html" title="解惑系列(1)JSON到底是什么">https://blog.itjk.me/2019/05/28/解惑系列(1)JSON到底是什么.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/JSON/" rel="tag"># JSON</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/05/28/Hexo%E7%B3%BB%E5%88%97(8)PicGo%E5%92%8CGitHub%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%9B%BE%E5%BA%8A%E5%B7%A5%E5%85%B7.html" rel="prev" title="Hexo系列(8)PicGo和GitHub搭建个人图床工具">
+      <i class="fa fa-chevron-left"></i> Hexo系列(8)PicGo和GitHub搭建个人图床工具
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/05/29/Hexo%E7%B3%BB%E5%88%97(9)%E4%BD%BF%E7%94%A8TravisCI%E8%87%AA%E5%8A%A8%E9%83%A8%E7%BD%B2Hexo%E5%8D%9A%E5%AE%A2.html" rel="next" title="Hexo系列(9)使用TravisCI自动部署Hexo博客">
+      Hexo系列(9)使用TravisCI自动部署Hexo博客 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是-JSON"><span class="nav-number">1.</span> <span class="nav-text">什么是 JSON</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JSON-格式"><span class="nav-number">2.</span> <span class="nav-text">JSON 格式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JavaScript-中的-JSON"><span class="nav-number">3.</span> <span class="nav-text">JavaScript 中的 JSON</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#传递的到底是什么？"><span class="nav-number">3.1.</span> <span class="nav-text">传递的到底是什么？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JSON-对象"><span class="nav-number">3.2.</span> <span class="nav-text">JSON 对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JSON-stringify"><span class="nav-number">3.3.</span> <span class="nav-text">JSON.stringify</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JSON-parse"><span class="nav-number">3.4.</span> <span class="nav-text">JSON.parse</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">5.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="挨踢极客"
+      src="/images/luxun.jpg">
+  <p class="site-author-name" itemprop="name">挨踢极客</p>
+  <div class="site-description" itemprop="description">人生苦短，我想编程</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/LicV587" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;LicV587" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/LicV587" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;LicV587" rel="noopener" target="_blank"><i class="twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://blog.didispace.com/" title="http:&#x2F;&#x2F;blog.didispace.com&#x2F;" rel="noopener" target="_blank">程序员DD</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://blog.yuqiyu.com/" title="http:&#x2F;&#x2F;blog.yuqiyu.com&#x2F;" rel="noopener" target="_blank">恒宇少年</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.lqdev.cn/" title="https:&#x2F;&#x2F;blog.lqdev.cn&#x2F;" rel="noopener" target="_blank">趔趄的猿</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.ityouknow.com/" title="http:&#x2F;&#x2F;www.ityouknow.com&#x2F;" rel="noopener" target="_blank">纯洁的微笑</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://x-d.xyz/" title="https:&#x2F;&#x2F;x-d.xyz&#x2F;" rel="noopener" target="_blank">iYuWe</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.codesheep.cn/" title="https:&#x2F;&#x2F;www.codesheep.cn&#x2F;" rel="noopener" target="_blank">程序羊</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://springboot.fun/" title="http:&#x2F;&#x2F;springboot.fun&#x2F;" rel="noopener" target="_blank">SpingBoot中文索引</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://springcloud.fun/" title="http:&#x2F;&#x2F;springcloud.fun&#x2F;" rel="noopener" target="_blank">SpingCloud中文索引</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://chinsyo.com/" title="https:&#x2F;&#x2F;chinsyo.com&#x2F;" rel="noopener" target="_blank">Chinsyo | 晨晓</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heartbeat"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">挨踢极客</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">37k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">34 分钟</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'FYsByw69gerlQOt3ngMbxRvi-9Nh9j0Va',
+      appKey     : 'mxtN4JUfO9N8GoOwzawXaimJ',
+      placeholder: "show me your comments",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : true,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
