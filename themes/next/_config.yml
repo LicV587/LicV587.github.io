@@ -267,8 +267,8 @@ post_meta:
   item_text: true   # 设为true 可以一行显示 文章的所有属性
   created_at: true
   updated_at:
-    enable: true
-    another_day: true
+    enable: false
+    another_day: false
   categories: true
 
 # 文章 字数统计、阅读时长等显示
