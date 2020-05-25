@@ -5,9 +5,9 @@
   <subtitle>show me the code</subtitle>
   <link href="/atom.xml" rel="self"/>
   
-  <link href="https://licv587.github.io/"/>
+  <link href="https://blog.itjk.me/"/>
   <updated>2020-05-21T08:18:04.493Z</updated>
-  <id>https://licv587.github.io/</id>
+  <id>https://blog.itjk.me/</id>
   
   <author>
     <name>挨踢极客</name>
@@ -18,8 +18,8 @@
   
   <entry>
     <title>Hello World</title>
-    <link href="https://licv587.github.io/2020/05/21/hello-world.html"/>
-    <id>https://licv587.github.io/2020/05/21/hello-world.html</id>
+    <link href="https://blog.itjk.me/2020/05/21/hello-world.html"/>
+    <id>https://blog.itjk.me/2020/05/21/hello-world.html</id>
     <published>2020-05-21T08:18:04.493Z</published>
     <updated>2020-05-21T08:18:04.493Z</updated>
     
