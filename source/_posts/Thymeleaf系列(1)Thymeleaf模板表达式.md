@@ -14,6 +14,8 @@ date: 2020-06-04 17:17:45
 
 <!-- more -->
 
+> Thymeleaf 常用模板表达式汇总
+
 ## 日期格式、组件提取等
 ```java
 ${#dates.format(date)}
